@@ -6,15 +6,20 @@ This project focuses on brain graph super-resolution, aiming to predict high-res
 
 ## Implementation Details
 
-Data: The dataset includes three CSV files (train_LR.csv, train_HR.csv, and test_LR.csv), with LR data as 160x160 matrices (vectorized to 12,720 features) and HR data as 268x268 matrices (vectorized to 35,778 features) for 189 subjects. Data is loaded, validated for NaN/Inf values, and converted into graph structures using torch_geometric.
+### Data: 
+The dataset includes three CSV files (train_LR.csv, train_HR.csv, and test_LR.csv), with LR data as 160x160 matrices (vectorized to 12,720 features) and HR data as 268x268 matrices (vectorized to 35,778 features) for 189 subjects. Data is loaded, validated for NaN/Inf values, and converted into graph structures using torch_geometric.
 
-Preprocessing: LR and HR vectors are transformed into adjacency matrices, and graph data objects are created with node features (mean connectivity), edge indices, and edge weights. The model predicts the upper triangular part of the HR matrix.
+### Preprocessing: 
+LR and HR vectors are transformed into adjacency matrices, and graph data objects are created with node features (mean connectivity), edge indices, and edge weights. The model predicts the upper triangular part of the HR matrix.
 
-Model: A GraphUNet architecture is implemented using torch_geometric, with 1 input channel, 64 hidden channels, and an output size of 35,778 (matching HR features). The model includes hierarchical graph convolution, pooling, and dense layers, with ReLU activation, dropout (0.3) for regularization, and no batch normalization (to handle single-graph processing).
+### Model: 
+A GraphUNet architecture is implemented using torch_geometric, with 1 input channel, 64 hidden channels, and an output size of 35,778 (matching HR features). The model includes hierarchical graph convolution, pooling, and dense layers, with ReLU activation, dropout (0.3) for regularization, and no batch normalization (to handle single-graph processing).
 
-Training: The model is trained on CPU (no GPU) using Adam optimizer (learning rate 0.001, weight decay 1e-5), MSE loss, and a ReduceLROnPlateau scheduler with early stopping (patience 10). Training processes one graph at a time, with gradient clipping (max_norm=1.0) and up to 10 epochs.
+### Training: 
+The model is trained on CPU (no GPU) using Adam optimizer (learning rate 0.001, weight decay 1e-5), MSE loss, and a ReduceLROnPlateau scheduler with early stopping (patience 10). Training processes one graph at a time, with gradient clipping (max_norm=1.0) and up to 10 epochs.
 
-Evaluation: Predictions are visualized as heatmaps comparing LR input, true HR, and predicted HR matrices, with potential for quantitative metrics like MSE/MAE if ground truth HR test data is available. The model is saved for future inference.
+### Evaluation: 
+Predictions are visualized as heatmaps comparing LR input, true HR, and predicted HR matrices, with potential for quantitative metrics like MSE/MAE if ground truth HR test data is available. The model is saved for future inference.
 
 ## Summary
 
